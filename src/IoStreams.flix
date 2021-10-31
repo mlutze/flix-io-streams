@@ -25,4 +25,21 @@ namespace IoStreams {
     }
   }
 
+  pub def outputStreamToChannel(out: ##java.io.OutputStream): Channel[StreamContents] & Impure = {
+    import new java.io.PrintWriter(##java.io.OutputStream) as newPrintWriter;
+    let p = newPrintWriter(out);
+    let c = chan StreamContents 0;
+    spawn writeLinesFromChannel(p, c);
+    c
+  }
+
+  def writeLinesFromChannel(out: ##java.io.PrintWriter, c: Channel[StreamContents]): Unit & Impure = {
+    import java.io.PrintWriter.println(String);
+    match (<- c) {
+      case Str(s) => println(out, s); writeLinesFromChannel(out, c)
+      case EOI => ()
+    }
+  }
+
+
 }
