@@ -1,4 +1,3 @@
 # flix-io-streams
 
-Enter some useful information.
-
+Conversion of Java IO streams to more useful Flix types.
