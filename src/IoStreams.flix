@@ -35,9 +35,10 @@ namespace IoStreams {
 
   def writeLinesFromChannel(out: ##java.io.PrintWriter, c: Channel[StreamContents]): Unit & Impure = {
     import java.io.PrintWriter.println(String);
+    import java.io.PrintWriter.flush();
     match (<- c) {
       case Str(s) => println(out, s); writeLinesFromChannel(out, c)
-      case EOI => ()
+      case EOI => flush(out)
     }
   }
 
